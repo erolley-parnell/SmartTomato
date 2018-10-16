@@ -26,12 +26,11 @@ shape = tomato;
 while(1)
     shape.string = fscanf(s, '%s');
     shape.prep;
+    shape.arrayData
+    shape.Z;
     surf(shape.Z);
-    axis([ 0, 4, 0, 4 , -70, 300]); 
+    axis([ 0, 4, 0, 5 , -70, 300]); 
     drawnow
-
-    %refreshdata(shape.Z);
-    %pause(0.5)
     
 
 end
