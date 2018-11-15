@@ -1,8 +1,10 @@
-
 int Sensor[4][5]={0};
 int offset[4][5]={0};
-int count = 0;
-int offsetCount[4][5] = {0};
+int maxStore[4][5] = {0};
+int minStore[4][5] = {0};
+
+int previous[4][5] = {0};
+int threshold = 40;
 void setup() {
   // put your setup code here, to run once:
 Serial.begin(57600);
@@ -48,27 +50,20 @@ void loop() {
     digitalWrite(y,HIGH);
    
     for(int x=3; x<=7; x++){
-        // delay(50);
-        Sensor[(y-2)][(x-3)]= analogRead(x) - offset[y-2][x-3];
-        // delay(50);
-        if (count <= 3){
-          offsetCount[(y-2)][(x-3)]+=analogRead(x);
+
+        int tempVal = analogRead(x);// - offset[y-2][x-3];
+        if (tempVal < minStore[y-2][x-3]){
+             minStore[y-2][x-3] = tempVal;
         }
-        else
-        {
-          offset[y-2][x-3] = offsetCount[y-2][x-3]/3;             
+        if (tempVal > maxStore[y-2][x-3]){
+            maxStore[y-2][x-3] = tempVal;
         }
-      }
-        digitalWrite(y,LOW);
+        Sensor[y-2][x-3] = map(tempVal, minStore[y-2][x-3],maxStore[y-2][x-3], 0, 20);
+
+    }
+    digitalWrite(y,LOW);
   }
 
-    if (count == 3){
-      count = 0;
-      offsetCount[4][5] = {0};
-    }
-    else{
-    count++;
-    }
 
   //display
 
